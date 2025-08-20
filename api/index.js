@@ -1,23 +1,17 @@
-// index.js (CommonJS)
-const express = require("express");
-const suma = require("./suma");
-const obtenerTiempo = require("./tiempo");
+// api/index.js
+const suma = require("../suma");
+const obtenerTiempo = require("../tiempo");
 
-const app = express();
-
-app.get("/", (req, res) => {
-  res.send("Servidor funcionando en Vercel con CommonJS 🚀");
-});
-
-app.get("/suma", (req, res) => {
-  const resultado = suma(10, 5);
-  res.send(`La suma es: ${resultado}`);
-});
-
-app.get("/tiempo", (req, res) => {
-  res.send(`Tiempo actual: ${obtenerTiempo()}`);
-});
-
-app.listen(3000, () => {
-  console.log("Servidor local en http://localhost:3000");
-});
+module.exports = (req, res) => {
+  if (req.url === "/suma") {
+    const resultado = suma(10, 5);
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end(`La suma es: ${resultado}`);
+  } else if (req.url === "/tiempo") {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end(`Tiempo actual: ${obtenerTiempo()}`);
+  } else {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("Servidor funcionando en Vercel con CommonJS 🚀");
+  }
+};
